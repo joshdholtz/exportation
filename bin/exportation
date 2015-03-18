@@ -39,19 +39,40 @@ class ExportationApplication
 
     command :encrypt do |c|
       c.syntax = 'exportation encrypt [options]'
-      c.description = 'Encrypts certificates, private keys, and provisioning profiles with SSL'
+      c.description = 'Encrypts certificates, private keys, and provisioning profiles with AES'
       c.option '--password STRING', String, 'Password to use for the encryption'
       c.option '--output STRING', String, 'Output directory for files (defaults to where original files are located)'
+      c.option '--force', 'Forces all files to decrypted (will encrypt decrypted files)'
       c.action do |args, options|
         options.default output: nil
 
         raise "--password is required" unless options.password
 
-        Exportation::Encrypt.new(
+        Exportation::Crypter.new(
           files: args,
           password: options.password,
           output: options.output
-        ).run
+        ).run :en, options.force
+
+      end
+    end
+
+    command :decrypt do |c|
+      c.syntax = 'exportation decrypt [options]'
+      c.description = 'Decrypts certificates, private keys, and provisioning profiles with AES'
+      c.option '--password STRING', String, 'Password to use for the decryption'
+      c.option '--output STRING', String, 'Output directory for files (defaults to where original files are located)'
+      c.option '--force', 'Forces all files to decrypted (will encrypt decrypted files)'
+      c.action do |args, options|
+        options.default output: nil
+
+        raise "--password is required" unless options.password
+
+        Exportation::Crypter.new(
+          files: args,
+          password: options.password,
+          output: options.output
+        ).run :de, options.force
 
       end
     end

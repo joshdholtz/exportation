@@ -41,7 +41,7 @@ module Exportation
 
   end
 
-  class Encrypt
+  class Crypter
 
     attr_accessor :files, :password, :output
 
@@ -51,8 +51,23 @@ module Exportation
       @output = options[:output]
     end
 
-    def run
+    def run(crypt, force = false)
 
+      unless force
+        if crypt == :en
+          # Verify files are not already encrypted
+          files.each do |file|
+            raise 'Some of these files may be encrypted (ending with .enc)' if file.end_with? '.enc'
+          end
+        elsif crypt == :de
+          # Verify files are not already decrypted
+          files.each do |file|
+            raise 'Some of these files may be encrypted (ending with .enc)' unless file.end_with? '.enc'
+          end
+        end
+      end
+
+      # Does the stuff
       files.each do |file|
           if File.exists? file
             output_file = file
@@ -60,7 +75,13 @@ module Exportation
               output_file = File.join(output, File.basename(file))
             end
 
-            bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file}.enc -a"
+            if crypt == :en
+              output_file += '.enc'
+            elsif crypt == :de
+              output_file = output_file.gsub('.enc','')
+            end
+
+            bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
             puts "Running: #{bash}"
             `#{bash}`
           else
