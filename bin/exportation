@@ -25,11 +25,32 @@ class ExportationApplication
       c.action do |args, options|
         options.default path: "./", filename:"exported", password: ""
 
+        raise "--name is required" unless options.name
+
         Exportation::Export.new(
           path: options.path,
           filename: options.filename,
           name: options.name,
           password: options.name
+        ).run
+
+      end
+    end
+
+    command :encrypt do |c|
+      c.syntax = 'exportation encrypt [options]'
+      c.description = 'Encrypts certificates, private keys, and provisioning profiles with SSL'
+      c.option '--password STRING', String, 'Password to use for the encryption'
+      c.option '--output STRING', String, 'Output directory for files (defaults to where original files are located)'
+      c.action do |args, options|
+        options.default output: nil
+
+        raise "--password is required" unless options.password
+
+        Exportation::Encrypt.new(
+          files: args,
+          password: options.password,
+          output: options.output
         ).run
 
       end

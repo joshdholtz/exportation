@@ -21,7 +21,6 @@ module Exportation
       @filename = options[:filename]
       @name = options[:name]
       @password = options[:password]
-
     end
 
     def run
@@ -37,6 +36,37 @@ module Exportation
 
       puts "Running: #{bash}"
       `#{bash}`
+
+    end
+
+  end
+
+  class Encrypt
+
+    attr_accessor :files, :password, :output
+
+    def initialize(options)
+      @files = options[:files]
+      @password = options[:password]
+      @output = options[:output]
+    end
+
+    def run
+
+      files.each do |file|
+          if File.exists? file
+            output_file = file
+            if output
+              output_file = File.join(output, File.basename(file))
+            end
+
+            bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file}.enc -a"
+            puts "Running: #{bash}"
+            `#{bash}`
+          else
+            puts "File does not exist - #{file}"
+          end
+      end
 
     end
 
