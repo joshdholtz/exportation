@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.push File.expand_path('../../lib', __FILE__)
+
+require 'exportation'
+
+require 'rubygems'
+require 'commander'
+
+class ExportationApplication
+  include Commander::Methods
+
+  def run
+    program :name, 'Exportation'
+    program :version, '0.1.0'
+    program :description, 'CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys.'
+
+    command :export do |c|
+      c.syntax = 'exportation export [options]'
+      c.description = 'Exports certificate and private key from Keychain Access'
+      c.option '--path STRING', String, 'Path to save certificate and private key'
+      c.option '--filename STRING', String, 'File name to save certificate and private key as'
+      c.option '--name STRING', String, 'Common name of the cert as it is displayed in Keychain Access'
+      c.option '--password STRING', String, 'Password to use for the private key'
+      c.action do |args, options|
+        options.default path: "./", filename:"exported", password: ""
+
+        Exportation::Export.new(
+          path: options.path,
+          filename: options.filename,
+          name: options.name,
+          password: options.name
+        ).run
+
+      end
+    end
+
+    run!
+  end
+end
+
+ExportationApplication.new.run if $0 == __FILE__
