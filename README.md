@@ -1,11 +1,36 @@
 # exportation
 CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys.
 
-![Example of exportation](video/example.gif)
+![Example of exportation](readme_assets/example.gif)
 
 ### Features in progress
 - Integrate with [fastlane](https://github.com/KrauseFx/fastlane) :rocket:
 - Create a separate keychain with the certificates and private keys for use on CI systems :grinning:
+
+### Caveats
+- Some phases of the script might run slow due to using AppleScript
+  - Initial load may take up to 5ish seconds
+  - Waiting for private key password to be entered may take up to 7ish seconds
+- May need to give "Accessibility" access to **ARDAgent** and **Terminal**
+
+## Installation
+
+### Install gem
+```sh
+gem install exportation
+```
+
+### Give "Accessibility" access
+- Open up "Security & Privacy" preferences
+- Select "Accessibility"
+- Add **ARDAgent** and **Terminal**
+  - Click "+"
+  - Press CMD+SHIT+G (to go to specific folder)
+  - **ARDAgent** should be under `/System/Library/CoreServices/RemoteManagement/`
+  - **Terminal&& should be under `/Applications/Utilities/`
+  
+![](readme_assets/access.png)
+**You won't need to give Heroes, Script Editor, or Steam permissions for exportation** :wink:
 
 ## Commands
 Exportation has three different commands: `export`, `encrypt`, and `decrypt`.
