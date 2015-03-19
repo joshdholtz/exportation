@@ -3,6 +3,11 @@ CLI tool of easy exporting, encrypting, and decrypting of certificates and priva
 
 ![Example of exportation](readme_assets/example.gif)
 
+### Why
+- Export **and** encrypt certificates **and** private keys **into** repos
+  - CI tools (may need these to distrubute builds to Apple TestFlight Beta :apple:)
+  - For other developers (for when you are on vacation and they need to make a distribution build :grimacing:)
+
 ### Features in progress
 - Integrate with [fastlane](https://github.com/KrauseFx/fastlane) :rocket:
 - Create a separate keychain with the certificates and private keys for use on CI systems :grinning:
