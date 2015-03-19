@@ -31,7 +31,7 @@ class ExportationApplication
           path: options.path,
           filename: options.filename,
           name: options.name,
-          password: options.path
+          password: options.password
         ).run
 
       end
