@@ -81,4 +81,4 @@ class ExportationApplication
   end
 end
 
-ExportationApplication.new.run if $0 == __FILE__
+ExportationApplication.new.run
