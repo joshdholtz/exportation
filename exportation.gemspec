@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
     'https://github.com/joshdholtz/fastlane-env-lanes'
   s.license       = 'MIT'
 
-  s.files       = Dir["lib/**/*"] + %w{ bin/exhibitor README.md LICENSE applescript/exportation.scpt }
+  s.files       = Dir["lib/**/*"] + %w{ bin/exportation README.md LICENSE applescript/exportation.scpt }
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
