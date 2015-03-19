@@ -32,7 +32,7 @@ gem install exportation
   - Click "+"
   - Press CMD+SHIT+G (to go to specific folder)
   - **ARDAgent** should be under `/System/Library/CoreServices/RemoteManagement/`
-  - **Terminal&& should be under `/Applications/Utilities/`
+  - **Terminal** should be under `/Applications/Utilities/`
   
 ![](readme_assets/access.png)
 **You won't need to give Heroes, Script Editor, or Steam permissions for exportation** :wink:
