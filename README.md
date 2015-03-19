@@ -68,3 +68,11 @@ Always put all for arguments in strings because I don't do AppleScript well :gri
 ```sh
 osascript applescript/exportation.scpt "~/directory_you_want_to_export_to/" "dist" "iPhone Distribution: Your Company LLC"  "thepassword"
 ```
+
+## Author
+
+Josh Holtz, me@joshholtz.com, [@joshdholtz](https://twitter.com/joshdholtz)
+
+## License
+
+exportation is available under the MIT license. See the LICENSE file for more info.
