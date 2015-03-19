@@ -1,6 +1,8 @@
 # exportation
 CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys.
 
+![Example of exportation](video/example.gif)
+
 ### Features in progress
 - Integrate with [fastlane](https://github.com/KrauseFx/fastlane) :rocket:
 - Create a separate keychain with the certificates and private keys for use on CI systems :grinning:
