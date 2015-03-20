@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name        = 'exportation'
-  s.version     = '0.1.0'
-  s.date        = '2015-03-18'
+  s.version     = '0.2.0'
+  s.date        = '2015-03-20'
   s.summary     = "CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys"
   s.description = "CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys using Keychain Acess and openssl"
   s.authors     = ["Josh Holtz"]
   s.email       = 'me@joshholtz.com'
   s.homepage    =
-    'https://github.com/joshdholtz/fastlane-env-lanes'
+    'https://github.com/joshdholtz/exportation'
   s.license       = 'MIT'
 
   s.files       = Dir["lib/**/*"] + %w{ bin/exportation README.md LICENSE applescript/exportation.scpt }
