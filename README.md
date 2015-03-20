@@ -1,6 +1,8 @@
 # exportation
 CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys.
 
+**Important:** The `export` command will take control of your "Keychain Access" app so keep all hands off your computer while that command runs
+
 ![Example of exportation](readme_assets/example.gif)
 
 ### Why
@@ -33,7 +35,7 @@ gem install exportation
   - Press CMD+SHIT+G (to go to specific folder)
   - **ARDAgent** should be under `/System/Library/CoreServices/RemoteManagement/`
   - **Terminal** should be under `/Applications/Utilities/`
-  
+
 ![](readme_assets/access.png)
 **You won't need to give Heroes, Script Editor, or Steam permissions for exportation** :wink:
 

@@ -6,6 +6,7 @@ require 'exportation'
 
 require 'rubygems'
 require 'commander'
+require 'colorize'
 
 class ExportationApplication
   include Commander::Methods
@@ -25,14 +26,20 @@ class ExportationApplication
       c.action do |args, options|
         options.default path: "./", filename:"exported", password: ""
 
-        raise "--name is required" unless options.name
+        begin
+          raise "--name is required" unless options.name
 
-        Exportation::Export.new(
-          path: options.path,
-          filename: options.filename,
-          name: options.name,
-          password: options.password
-        ).run
+          log "Info".blue, "Take all hands off your computer! exportation is going to take control of 'Keychain Access'".blue
+
+          Exportation::Export.new(
+            path: options.path,
+            filename: options.filename,
+            name: options.name,
+            password: options.password
+          ).run
+        rescue Exception => e
+          log "Error".red, e.message.red
+        end
 
       end
     end
@@ -46,13 +53,17 @@ class ExportationApplication
       c.action do |args, options|
         options.default output: nil
 
-        raise "--password is required" unless options.password
+        begin
+          raise "--password is required" unless options.password
 
-        Exportation::Crypter.new(
-          files: args,
-          password: options.password,
-          output: options.output
-        ).run :en, options.force
+          Exportation::Crypter.new(
+            files: args,
+            password: options.password,
+            output: options.output
+          ).run :en, options.force
+        rescue Exception => e
+          log "Error".red, e.message.red
+        end
 
       end
     end
@@ -66,13 +77,17 @@ class ExportationApplication
       c.action do |args, options|
         options.default output: nil
 
-        raise "--password is required" unless options.password
+        begin
+          raise "--password is required" unless options.password
 
-        Exportation::Crypter.new(
-          files: args,
-          password: options.password,
-          output: options.output
-        ).run :de, options.force
+          Exportation::Crypter.new(
+            files: args,
+            password: options.password,
+            output: options.output
+          ).run :de, options.force
+        rescue Exception => e
+          log "Error".red, e.message.red
+        end
 
       end
     end

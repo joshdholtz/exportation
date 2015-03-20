@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'dotenv', '~> 0.7'
   s.add_dependency 'commander', '~> 4.3'
+  s.add_dependency 'colorize', '~> 0.7'
 end

@@ -2,12 +2,14 @@ PATH
   remote: .
   specs:
     exportation (0.1.0)
+      colorize (~> 0.7)
       commander (~> 4.3)
       dotenv (~> 0.7)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    colorize (0.7.5)
     commander (4.3.0)
       highline (~> 1.6.11)
     dotenv (0.11.1)
