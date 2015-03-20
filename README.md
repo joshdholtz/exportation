@@ -3,6 +3,16 @@ CLI tool of easy exporting, encrypting, and decrypting of certificates and priva
 
 **Important:** The `export` command will take control of your "Keychain Access" app so keep all hands off your computer while that command runs
 
+### Example usage (with prompt)
+```sh
+$: exportation export
+Name: RokkinCat LLC
+Path to save to (default: './'): ./examples
+Filename to save as (default: 'export'): dist
+Password for private key (default: ''): shhh
+Info  Take all hands off your computer! exportation is going to take control of 'Keychain Access'
+```
+
 ![Example of exportation](readme_assets/example.gif)
 
 ### Why
