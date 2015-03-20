@@ -19,6 +19,23 @@ Info  Take all hands off your computer! exportation is going to take control of 
 - Export **and** encrypt certificates **and** private keys **into** repos
   - CI tools (may need these to distrubute builds to Apple TestFlight Beta :apple:)
   - For other developers (for when you are on vacation and they need to make a distribution build :grimacing:)
+  
+### How
+- Makes use of AppleScript to control "Keychain Access"
+  - Opens "Keychain Access"
+  - Selects "Login" and "Certificates" for the left side
+  - Searches for the certificate you are looking for from `--name`
+  - Exports private key
+    - Right clicks it and selects export
+    - Changes the save path to your current directory (by default) or what was passed in through `--path`
+    - Saves the file to `exported.p12`
+    - Enters a blank password (by default) or what was passed in through `--password`
+    - Saves
+  - Exports certificate
+    - Right clicks it and selects export
+    - Changes the save path to your current directory (by default) or what was passed in through `--path`
+    - Saves the file to `exported.cer`
+    - Saves
 
 ### Features in progress
 - Integrate with [fastlane](https://github.com/KrauseFx/fastlane) :rocket:
