@@ -7,9 +7,14 @@ require 'exportation'
 require 'rubygems'
 require 'commander'
 require 'colorize'
+require 'terminal-notifier'
 
 class ExportationApplication
   include Commander::Methods
+
+  def is_empty?(str)
+    str.nil? || str.length == 0
+  end
 
   def run
     program :name, 'Exportation'
@@ -23,12 +28,22 @@ class ExportationApplication
       c.option '--filename STRING', String, 'File name to save certificate and private key as'
       c.option '--name STRING', String, 'Common name of the cert as it is displayed in Keychain Access'
       c.option '--password STRING', String, 'Password to use for the private key'
+      c.option '--noprompt', 'Do not prompt for missing options'
       c.action do |args, options|
-        options.default path: "./", filename:"exported", password: ""
 
         begin
-          raise "--name is required" unless options.name
+          unless options.noprompt
+            options.name = ask("Name: ") unless options.name
+            options.path = ask("Path to save to (default: './'): ") unless options.path
+            options.filename = ask("Filename to save as (default: 'export'): ") unless options.filename
+            options.password = ask("Password for private key (default: ''): ") unless options.password
+          end
 
+          options.path = './' if is_empty?(options.path)
+          options.filename = 'exported' if is_empty?(options.filename)
+          options.password = '' if is_empty?(options.password)
+
+          raise "'name' is required" if is_empty?(options.name)
           log "Info".blue, "Take all hands off your computer! exportation is going to take control of 'Keychain Access'".blue
 
           Exportation::Export.new(
@@ -37,7 +52,10 @@ class ExportationApplication
             name: options.name,
             password: options.password
           ).run
+
+          TerminalNotifier.notify('Certificate and private key exported!', title: 'exportation')
         rescue Exception => e
+          TerminalNotifier.notify('Export failed :(', title: 'exportation')
           log "Error".red, e.message.red
         end
 
@@ -45,16 +63,23 @@ class ExportationApplication
     end
 
     command :encrypt do |c|
-      c.syntax = 'exportation encrypt [options]'
+      c.syntax = 'exportation encrypt [file_path1] [file_path2] ... [options]'
       c.description = 'Encrypts certificates, private keys, and provisioning profiles with AES'
       c.option '--password STRING', String, 'Password to use for the encryption'
       c.option '--output STRING', String, 'Output directory for files (defaults to where original files are located)'
       c.option '--force', 'Forces all files to decrypted (will encrypt decrypted files)'
+      c.option '--noprompt', 'Do not prompt for missing options'
       c.action do |args, options|
         options.default output: nil
 
         begin
-          raise "--password is required" unless options.password
+          unless options.noprompt
+            options.password = ask("Password: ") unless options.password
+            options.output= ask("Output path (default: location of unencrypted files): ") unless options.output
+          end
+
+          raise "no files were passed through arguments" if args.empty?
+          raise "'password' is required" if is_empty?(options.password)
 
           Exportation::Crypter.new(
             files: args,
@@ -69,16 +94,23 @@ class ExportationApplication
     end
 
     command :decrypt do |c|
-      c.syntax = 'exportation decrypt [options]'
+      c.syntax = 'exportation decrypt [file_path1] [file_path2] ... [options]'
       c.description = 'Decrypts certificates, private keys, and provisioning profiles with AES'
       c.option '--password STRING', String, 'Password to use for the decryption'
       c.option '--output STRING', String, 'Output directory for files (defaults to where original files are located)'
       c.option '--force', 'Forces all files to decrypted (will encrypt decrypted files)'
+      c.option '--noprompt', 'Do not prompt for missing options'
       c.action do |args, options|
         options.default output: nil
 
         begin
-          raise "--password is required" unless options.password
+          unless options.noprompt
+            options.password = ask("Password: ") unless options.password
+            options.output= ask("Output path (default: location of encrypted files): ") unless options.output
+          end
+
+          raise "no files were passed through arguments" if args.empty?
+          raise "'password' is required" if is_empty?(options.password)
 
           Exportation::Crypter.new(
             files: args,

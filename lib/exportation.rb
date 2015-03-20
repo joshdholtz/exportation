@@ -69,24 +69,25 @@ module Exportation
 
       # Does the stuff
       files.each do |file|
-          if File.exists? file
-            output_file = file
-            if output
-              output_file = File.join(output, File.basename(file))
-            end
-
-            if crypt == :en
-              output_file += '.enc'
-            elsif crypt == :de
-              output_file = output_file.gsub('.enc','')
-            end
-
-            bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
-            puts "Running: #{bash}"
-            `#{bash}`
-          else
-            puts "File does not exist - #{file}"
+        file = './' + file unless file.start_with? '/'
+        if File.exists? file
+          output_file = file
+          if !output.nil? && output.length > 0
+            output_file = File.join(output, File.basename(file))
           end
+
+          if crypt == :en
+            output_file += '.enc'
+          elsif crypt == :de
+            output_file = output_file.gsub('.enc','')
+          end
+
+          bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
+          puts "Running: #{bash}"
+          `#{bash}`
+        else
+          puts "File does not exist - #{file}"
+        end
       end
 
     end

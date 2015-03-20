@@ -5,6 +5,7 @@ PATH
       colorize (~> 0.7)
       commander (~> 4.3)
       dotenv (~> 0.7)
+      terminal-notifier (~> 1.6)
 
 GEM
   remote: https://rubygems.org/
@@ -16,6 +17,7 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     highline (1.6.21)
+    terminal-notifier (1.6.2)
 
 PLATFORMS
   ruby
