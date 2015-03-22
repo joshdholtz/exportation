@@ -94,4 +94,86 @@ module Exportation
 
   end
 
+  class Keychain
+
+    attr_accessor :path, :password
+
+    def initialize(options)
+      @path = options[:path]
+      @password = options[:password]
+    end
+
+    def self.find_or_create_keychain(name, password, output_directory='./')
+      path = chain_path(name, output_directory)
+
+      unless File.exists? path
+        `security create-keychain -p '#{password}' #{path}`
+      end
+
+      Keychain.new(path: path, password: password)
+    end
+
+    def self.login_keychain(password)
+      path = `security login-keychain`.strip
+      Keychain.new(path: path, password: password)
+    end
+
+    def self.list_keychains
+      # Gets a list of all the user's keychains in an array
+      # The keychain are paths wrapped in double quotes
+      (`security list-keychains -d user`).scan(/(?:\w|"[^"]*")+/)
+    end
+
+    def import_certificate(cer_path)
+      # Imports a certificate into the keychain
+      `security import #{cer_path} -k #{@path} -T /usr/bin/codesign`
+    end
+
+    def import_private_key(key_path, password)
+      # Imports a private key into the keychain
+      `security import #{key_path} -k #{@path} -P '#{password}' -T /usr/bin/codesign`
+    end
+
+    def unlock!(seconds=3600)
+      # Unlocks the keychain
+      `security unlock-keychain -p '#{@password}' #{@path}`
+      `security -v set-keychain-settings -t #{seconds} -l #{@path}`
+    end
+
+    def add_to_keychain_list!
+      # Adds the keychain to the search list
+      keychains = (Keychain.list_keychains - ["\"#{@path}\""]).join(' ')
+      `security list-keychains -d user -s #{keychains} \"#{@path}\"`
+    end
+
+    def remove_keychain_from_list!
+      # Removes the keychain from the search list
+      keychains = (Keychain.list_keychains - ["\"#{@path}\""]).join(' ')
+      `security list-keychains -d user -s #{keychains}`
+    end
+
+    private
+
+    def self.chain_path(name, output_directory='./')
+      output_directory = File.expand_path output_directory
+      File.join(output_directory, "#{name}.keychain")
+    end
+
+    # Creates keychain with cert and private key (this is how Xcode knows how to sign things)
+    # sh "security create-keychain -p '#{keychain_password}' #{chain_path}"
+    # sh "security import ./Certs/apple.cer -k #{chain_path} -T /usr/bin/codesign"
+    # sh "security import ../build/unenc/dist.cer -k #{chain_path} -T /usr/bin/codesign"
+    # sh "security import ../build/unenc/dist.p12 -k #{chain_path} -P '#{private_key_password}' -T /usr/bin/codesign"
+
+    # sh "security unlock-keychain -p '#{keychain_password}' #{chain_path}"
+    # sh "security -v set-keychain-settings -t 3600 -l #{chain_path}"
+    #
+    # # Add keychain to list (this is literally the key to getting this all working)
+    # sh "security list-keychains -d user -s #{ENV['ORIGINAL_KEYCHAINS']} \"#{chain_path}\""
+
+    # Reset keychains to what was originally set for user
+    # sh "security list-keychains -d user -s #{ENV['ORIGINAL_KEYCHAINS']}"
+
+  end
+
 end
