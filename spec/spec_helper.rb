@@ -1,8 +1,8 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'exportation' # and any other gems you need
+require './lib/exportation.rb'
 
 RSpec.configure do |config|
-  
+
 end
