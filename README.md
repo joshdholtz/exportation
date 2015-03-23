@@ -147,6 +147,71 @@ keychain.add_to_keychain_list!
 keychain.remove_keychain_from_list!
 ```
 
+## Fastlane integration
+
+```ruby
+lane :ci_build do
+
+  enc_password = ENV['ENC_PASSWORD']
+  keychain_password = ENV['KEYCHAIN_PASSWORD']
+  private_key_password = ENV['PKEY_PASSWORD']
+
+  # Cleaning house and making directories
+  sh "rm -rf ../build"
+  sh "mkdir ../build"
+  sh "mkdir ../build/unenc"
+
+  # Decrypting cert and private key
+  Exportation::Crypter.new(
+    files: ["../circle/dist.cer.enc", "../circle/dist.p12.enc"],
+    password: enc_password,
+    output: "../build/unenc/"
+  ).run :de
+
+  # Creating keychain to use for xcodebuild
+  keychain = Exportation::Keychain.find_or_create_keychain 'ios-build', keychain_password, '../build'
+
+  # Importing the Apple certificate and the uncrypted cert and private key
+  keychain.import_certificate '../circle/apple.cer'
+  keychain.import_certificate '../build/unenc/dist.cer'
+  keychain.import_private_key '../build/unenc/dist.p12', private_key_password
+
+  # Unlocking keychain (defaults to 1 hour) and adds keychain to user search list
+  keychain.unlock!
+  keychain.add_to_keychain_list!
+
+  # Building archive
+  xcodebuild(
+    clean: true,
+    archive: true,
+    archive_path: './build/YourApp.xcarchive',
+    workspace: ENV['WORKSPACE'],
+    scheme: ENV['SCHEME'],
+    configuration: 'Release',
+    sdk: 'iphoneos',
+    keychain: keychain.path
+    )
+
+  # Building IPA
+  xcodebuild(
+    export_archive: true,
+    export_path: './build/YourApp'
+    )
+
+  # Send to HockeyApp
+  hockey({
+    api_token: ENV['HOCKEYAPP_API_TOKEN'],
+    ipa: Actions.lane_context[ Actions::SharedValues::IPA_OUTPUT_PATH ],
+    notify: 1
+  })
+
+  # Cleaning house again
+  sh "rm -rf ../circle/unenc"
+  keychain.remove_keychain_from_list!
+
+end
+```
+
 ## Using the internals
 
 ### Compiling and running the AppleScript directly
