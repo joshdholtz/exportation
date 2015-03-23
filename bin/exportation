@@ -39,10 +39,6 @@ class ExportationApplication
             options.password = ask("Password for private key (default: ''): ") unless options.password
           end
 
-          options.path = './' if is_empty?(options.path)
-          options.filename = 'exported' if is_empty?(options.filename)
-          options.password = '' if is_empty?(options.password)
-
           raise "'name' is required" if is_empty?(options.name)
           log "Info".blue, "Take all hands off your computer! exportation is going to take control of 'Keychain Access'".blue
 

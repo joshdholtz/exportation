@@ -12,6 +12,10 @@ module Exportation
     File.join(gem_path, 'applescript', 'exportation.scpt')
   end
 
+  def self.is_empty?(str)
+    str.nil? || str.length == 0
+  end
+
   class Export
 
     attr_accessor :path, :filename, :name, :password
@@ -21,9 +25,14 @@ module Exportation
       @filename = options[:filename]
       @name = options[:name]
       @password = options[:password]
+
+      @path = './' if Exportation.is_empty?(@path)
+      @filename = 'exported' if Exportation.is_empty?(@filename)
+      @password = '' if Exportation.is_empty?(@password)
     end
 
-    def run
+    def run_command
+      raise "name is required" if Exportation.is_empty?(@name)
 
       abs_path = File.expand_path path
       abs_path += '/' unless abs_path.end_with? '/'
@@ -32,8 +41,11 @@ module Exportation
         "\"#{abs_path}\" " +
         "\"#{filename}\" " +
         "\"#{name}\" " +
-        "\"#{password}\" "
+        "\"#{password}\""
+    end
 
+    def run
+      bash = run_command
       puts "Running: #{bash}"
       `#{bash}`
 

@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'commander', '~> 4.3'
   s.add_dependency 'colorize', '~> 0.7'
   s.add_dependency 'terminal-notifier', '~> 1.6'
+
+  s.add_development_dependency "rspec"
 end
