@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe Exportation::Export do
 
-  describe "#run" do
+  describe "#run_command" do
 
     it "works with all parameters with relative path" do
       export = Exportation::Export.new(

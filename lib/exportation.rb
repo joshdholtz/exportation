@@ -31,6 +31,12 @@ module Exportation
       @password = '' if Exportation.is_empty?(@password)
     end
 
+    def run
+      bash = run_command
+      puts "Running: #{bash}"
+      `#{bash}`
+    end
+
     def run_command
       raise "name is required" if Exportation.is_empty?(@name)
 
@@ -42,13 +48,6 @@ module Exportation
         "\"#{filename}\" " +
         "\"#{name}\" " +
         "\"#{password}\""
-    end
-
-    def run
-      bash = run_command
-      puts "Running: #{bash}"
-      `#{bash}`
-
     end
 
   end
@@ -64,6 +63,14 @@ module Exportation
     end
 
     def run(crypt, force = false)
+      run_commands(crypt, force).each do |bash|
+        puts "Running: #{bash}"
+        `#{bash}`
+      end
+    end
+
+    def run_commands(crypt, force = false)
+      raise "password is required" if Exportation.is_empty?(@password)
 
       unless force
         if crypt == :en
@@ -80,6 +87,7 @@ module Exportation
       end
 
       # Does the stuff
+      commands = []
       files.each do |file|
         file = './' + file unless file.start_with? '/'
         if File.exists? file
@@ -94,14 +102,13 @@ module Exportation
             output_file = output_file.gsub('.enc','')
           end
 
-          bash = "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
-          puts "Running: #{bash}"
-          `#{bash}`
+          commands << "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
         else
-          puts "File does not exist - #{file}"
+          raise "File does not exist - #{file}"
         end
       end
 
+      commands
     end
 
   end
