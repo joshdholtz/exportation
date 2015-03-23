@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'exportation'
-  s.version     = '0.2.1'
+  s.version     = '0.2.2'
   s.date        = '2015-03-21'
   s.summary     = "CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys"
   s.description = "CLI tool of easy exporting, encrypting, and decrypting of certificates and private keys using Keychain Acess and openssl"
