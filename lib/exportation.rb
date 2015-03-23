@@ -96,13 +96,15 @@ module Exportation
             output_file = File.join(output, File.basename(file))
           end
 
+          decrypt = ''
           if crypt == :en
             output_file += '.enc'
           elsif crypt == :de
+            decrypt = ' -d'
             output_file = output_file.gsub('.enc','')
           end
 
-          commands << "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a"
+          commands << "openssl aes-256-cbc -k \"#{password}\" -in #{file} -out #{output_file} -a#{decrypt}"
         else
           raise "File does not exist - #{file}"
         end

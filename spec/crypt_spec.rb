@@ -54,8 +54,8 @@ describe Exportation::Crypter do
         )
         commands = cypter.run_commands :de
 
-        expect(commands[0]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.cer.enc -out output/file1.cer -a")
-        expect(commands[1]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.p12.enc -out output/file1.p12 -a")
+        expect(commands[0]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.cer.enc -out output/file1.cer -a -d")
+        expect(commands[1]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.p12.enc -out output/file1.p12 -a -d")
       end
 
       it "works with required parameters" do
@@ -65,8 +65,8 @@ describe Exportation::Crypter do
         )
         commands = cypter.run_commands :de
 
-        expect(commands[0]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.cer.enc -out ./spec/fixtures/file1.cer -a")
-        expect(commands[1]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.p12.enc -out ./spec/fixtures/file1.p12 -a")
+        expect(commands[0]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.cer.enc -out ./spec/fixtures/file1.cer -a -d")
+        expect(commands[1]).to eq("openssl aes-256-cbc -k \"password\" -in ./spec/fixtures/file1.p12.enc -out ./spec/fixtures/file1.p12 -a -d")
       end
 
       it "raises with missing parameters" do
