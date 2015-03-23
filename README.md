@@ -153,6 +153,11 @@ keychain.remove_keychain_from_list!
 ```
 
 ## Fastlane integration
+In this `fastlane` integration, I store my encrypted certificate and private key in the `circle` directory (because I'm using [CircleCI](http://circleci.com).
+
+The `enc_cert_and_key` lane runs on my local machine where I will export and encrypt the certificate and private key.
+
+The `ci_build` *can run* on my local machine but is **meant to run** on CircleCI (or TravisCI). This lane decrypts the certifivate and private key from the `circle` directory and puts the decrypted files in the `build/unenc` directory.
 
 ### Exporting and encrypting
 This lane exports the certificate and private key by controling keychain access, encrypts the files, and the removes the unencrypted files.
