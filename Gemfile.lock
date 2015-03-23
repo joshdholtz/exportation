@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    exportation (0.2.2)
+    exportation (0.2.3)
       colorize (~> 0.7)
       commander (~> 4.3)
       dotenv (~> 0.7)

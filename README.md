@@ -149,8 +149,40 @@ keychain.remove_keychain_from_list!
 
 ## Fastlane integration
 
+### Exporting and encrypting
+This lane exports the certificate and private key by controling keychain access, encrypts the files, and the removes the unencrypted files.
+```ruby
+lane :enc_cert_and_key do
+  require 'exportation'
+
+  # Runs keychain to export cert and private key
+  Exportation::Export.new(
+    path: "../circle",
+    filename: "dist",
+    name: "RokkinCat LLC",
+    password: ENV['PKEY_PASSWORD']
+  ).run
+
+  # Encrypts cert and private key for repo storage
+  Exportation::Crypter.new(
+    files: ["../circle/dist.cer", "../circle/dist.p12"],
+    password: ENV['ENC_PASSWORD'],
+    output: "../circle/"
+  ).run :en
+
+  # Removes unencrypted cert and private key
+  sh "rm -f ../circle/dist.cer"
+  sh "rm -f ../circle/dist.p12"
+
+end
+```
+
+### Decrypting and importing
+This lane decrypts the certificate and private key, creates the keychain, and imports the certificate and private key into the keychain.
+It then uses that keychain the `xcodebuild` action to build an archive of the app.
 ```ruby
 lane :ci_build do
+  require 'exportation'
 
   enc_password = ENV['ENC_PASSWORD']
   keychain_password = ENV['KEYCHAIN_PASSWORD']
@@ -201,8 +233,6 @@ lane :ci_build do
   # Send to HockeyApp
   hockey({
     api_token: ENV['HOCKEYAPP_API_TOKEN'],
-    ipa: Actions.lane_context[ Actions::SharedValues::IPA_OUTPUT_PATH ],
-    notify: 1
   })
 
   # Cleaning house again
