@@ -1,6 +1,6 @@
 language: ruby
 script:
-  - bundle update
+  - bundle install --no-deployment
   - bundle exec rspec
 rvm:
   - 2.0.0
