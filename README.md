@@ -6,6 +6,11 @@
 
 CLI tool (and Ruby API) of easy exporting, encrypting, and decrypting of certificates and private keys. It can also add certificates and private keys to an existing or new keychain :grinning:
 
+- [Installation](#installation)
+- [CLI Commands](#cli-commands)
+- [Ruby API](#ruby-api)
+- [Fastlane Integration](#fastlane-integration)
+
 **Important:** The `export` command will take control of your "Keychain Access" app so keep all hands off your computer while that command runs
 
 ### Example usage (with prompt)
