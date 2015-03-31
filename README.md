@@ -68,7 +68,7 @@ gem install exportation
 - Select "Accessibility"
 - Add **ARDAgent** and **Terminal**
   - Click "+"
-  - Press CMD+SHIT+G (to go to specific folder)
+  - Press CMD+SHIFT+G (to go to specific folder)
   - **ARDAgent** should be under `/System/Library/CoreServices/RemoteManagement/`
   - **Terminal** should be under `/Applications/Utilities/`
 
@@ -91,7 +91,7 @@ exportation encrypt exported.cer exported.p12 --password dudethis
 ```
 
 ### Decrypting certificate and private key
-**Be awesome!** `decrypt` decrypts your encrypted files to use on your CI or for other developers to install. *BE CAREFULL TO NOT COMMIT THESE BACK INTO YOUR REPO*
+**Be awesome!** `decrypt` decrypts your encrypted files to use on your CI or for other developers to install. *BE CAREFUL TO NOT COMMIT THESE BACK INTO YOUR REPO*
 ```sh
 exportation decrypt exported.cer.enc exported.p12.enc --password dudethis
 ```
