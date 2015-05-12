@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
 
-  s.add_dependency 'dotenv', '~> 0.7'
-  s.add_dependency 'commander', '~> 4.3'
-  s.add_dependency 'colorize', '~> 0.7'
-  s.add_dependency 'terminal-notifier', '~> 1.6'
+  s.add_runtime_dependency 'dotenv', ['>= 0.7',  '< 3.0']
+  s.add_runtime_dependency 'commander', '~> 4.3'
+  s.add_runtime_dependency 'colorize', '~> 0.7'
+  s.add_runtime_dependency 'terminal-notifier', '~> 1.6'
 
   s.add_development_dependency "rspec"
 end
