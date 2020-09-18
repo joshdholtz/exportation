@@ -1,5 +1,5 @@
-# exportation
-[![Twitter: @KauseFx](https://img.shields.io/badge/contact-@joshdholtz-blue.svg?style=flat)](https://twitter.com/joshdholtz)
+# exportation (DO NOT USE)
+[![Twitter: @joshdholtz](https://img.shields.io/badge/contact-@joshdholtz-blue.svg?style=flat)](https://twitter.com/joshdholtz)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/joshdholtz/exportation/blob/master/LICENSE)
 [![Gem](https://img.shields.io/gem/v/exportation.svg?style=flat)](http://rubygems.org/gems/exportation)
 [![Build Status](https://img.shields.io/travis/joshdholtz/exportation/master.svg?style=flat)](https://travis-ci.org/joshdholtz/exportation)
